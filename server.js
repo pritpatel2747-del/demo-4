@@ -97,7 +97,7 @@ const startServer = async () => {
     console.log("✅ Database connected successfully");
     await sequelize.sync({ alter: false });
     console.log("✅ Models synchronized with database");
-    const PORT = process.env.PORT || 3001;
+    const PORT = process.env.PORT || 19099;
 
     // Enable SO_REUSEADDR to reuse port immediately
     server.setsockopt = true;
