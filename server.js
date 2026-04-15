@@ -101,10 +101,7 @@ const startServer = async () => {
 
     // Enable SO_REUSEADDR to reuse port immediately
     server.setsockopt = true;
-    app.get("/"  , (req, res) => {
-      res.send("Server is running");
-    });
-
+   
     server.listen(PORT, () => {
       console.log(`✅ Server is running on http://localhost:${PORT}`);
       console.log(`✅ Socket.io ready for connections`);
