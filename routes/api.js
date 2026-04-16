@@ -791,17 +791,29 @@ router.delete("/users/:id", async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    // ✅ SEND PUSH NOTIFICATION TO DELETED USER (even if tab is closed)
-    const userSubscription = await PushSubscription.findOne({ where: { userId: id } });
-    if (userSubscription) {
-      const pushSubscription = {
-        endpoint: userSubscription.endpoint,
-        keys: {
-          p256dh: userSubscription.p256dh,
-          auth: userSubscription.auth
-        }
-      };
-    console.log(`Found push subscription for user ${id}, sending account deletion notification...`+userSubscription.endpoint);
+    // // ✅ SEND PUSH NOTIFICATION TO DELETED USER (even if tab is closed)
+    // const userSubscription = await PushSubscription.findOne({ where: { userId: id } });
+    // if (userSubscription) {
+    //   const pushSubscription = {
+    //     endpoint: userSubscription.endpoint,
+    //     keys: {
+    //       p256dh: userSubscription.p256dh,
+    //       auth: userSubscription.auth
+    //     }
+    //   };
+
+
+    const subscriptions = await PushSubscription.findAll();
+
+for (const sub of subscriptions) {
+  const pushSubscription = {
+    endpoint: sub.endpoint,
+    keys: {
+      p256dh: sub.p256dh,
+      auth: sub.auth
+    }
+  };
+    console.log(`Found push subscription for user ${id}, sending account deletion notification...`+sub.endpoint);
       const notificationOptions = {
         title: "Account Deleted",
         body: "Your account has been deleted by an administrator. You will be logged out.",
